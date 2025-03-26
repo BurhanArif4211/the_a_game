@@ -35,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
         }
+        anime.SetBool("isJumping", !isGrounded);
     }
     void OnCollisionEnter(Collision collision)
     {
