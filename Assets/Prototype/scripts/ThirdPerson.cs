@@ -3,13 +3,13 @@ using UnityEngine;
 public class ThirdPersonCamera : MonoBehaviour
 {
     [Header("References")]
-    public Transform player;            // The player's transform
-    public Transform cameraTransform;   // The actual camera transform
+    public Transform player;            // The player character
+    public Transform cameraTransform;   // Camera transform
 
-    [Header("Positioning")]
-    public Vector3 offset = new Vector3(0, 1f, -5f); // Camera position relative to player
-    public float cameraSmoothness = 5f; // How smoothly the camera follows
-    public float rotationSpeed = 3f;    // Mouse rotation sensitivity
+    [Header("Settings")]
+    public Vector3 offset = new Vector3(0, 1.5f, -3f); // Camera position relative to player
+    public float rotationSpeed = 3f;    // Mouse sensitivity
+    public float followSmoothness = 5f; // Camera follow smoothness
 
     [Header("View Angles")]
     public float minVerticalAngle = -20f;
@@ -17,7 +17,7 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private float currentX = 0f;
     private float currentY = 0f;
-    // new deep seek code. I am not smart enough to code this
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -28,21 +28,20 @@ public class ThirdPersonCamera : MonoBehaviour
     {
         if (player == null) return;
 
-        // Get mouse input
+        // Mouse input to freely rotate camera
         currentX += Input.GetAxis("Mouse X") * rotationSpeed;
         currentY -= Input.GetAxis("Mouse Y") * rotationSpeed;
         currentY = Mathf.Clamp(currentY, minVerticalAngle, maxVerticalAngle);
 
-        // Calculate rotation and position
+        // Apply rotation to camera
         Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
         Vector3 desiredPosition = player.position + rotation * offset;
 
-        // Apply position and rotation
-        cameraTransform.position = Vector3.Lerp(cameraTransform.position, desiredPosition, cameraSmoothness * Time.deltaTime);
-        cameraTransform.LookAt(player.position + Vector3.up * offset.y); // Look at player's head level
+        // Smoothly follow player but don't rotate with movement
+        cameraTransform.position = Vector3.Lerp(cameraTransform.position, desiredPosition, followSmoothness * Time.deltaTime);
+        cameraTransform.LookAt(player.position + Vector3.up * 1.5f); // Look at player’s upper body
     }
 }
-
 //old deepseek code
 
 //using UnityEngine;
