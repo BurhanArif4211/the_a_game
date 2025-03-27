@@ -466,6 +466,7 @@ MonoBehaviour:
   cameraTransform: {fileID: 1865083429}
   offset: {x: 0, y: 1, z: -5}
   rotationSpeed: 3
+  SmoothFollow: 0
   followSmoothness: 5
   minVerticalAngle: -20
   maxVerticalAngle: 60
@@ -495,35 +496,15 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.28839773
-  m_Height: 1.8769104
+  m_Height: 1.8184264
   m_Direction: 1
-  m_Center: {x: 0, y: 0.9410993, z: -0.0043457747}
+  m_Center: {x: 0, y: 0.95, z: -0.0043457747}
 --- !u!4 &699755600 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3906d8048692b104180a0963b2a063fe,
     type: 3}
   m_PrefabInstance: {fileID: 1541195540}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &699755601
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 699755598}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47f93b5c054b61d4fbe9a663cb041c7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
-  jumpForce: 5
-  cameraTransform: {fileID: 1865083429}
-  rb: {fileID: 699755602}
-  anime: {fileID: 699755603}
-  rotationSpeed: 5
-  isGrounded: 0
-  nullVector: {x: 0, y: 0, z: 0}
 --- !u!54 &699755602
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -549,7 +530,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!95 &699755603
 Animator:
@@ -635,12 +616,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 699755598}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47f93b5c054b61d4fbe9a663cb041c7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalSpeed: 2
+  sprintSpeed: 7
+  acceleration: 5
+  deceleration: 8
+  rotationSpeed: 15
+  cameraTransform: {fileID: 1865083429}
+  animator: {fileID: 699755603}
+--- !u!114 &699755607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699755598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a47caec70e53fc43bd5f07fd89f26ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   crouchSpeed: 2.5
   crouchHeight: 0.5
---- !u!114 &699755607
+  movement: {fileID: 699755606}
+--- !u!114 &699755608
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -654,34 +655,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpForce: 5
   rb: {fileID: 699755602}
---- !u!114 &699755608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 699755598}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9225cc8927dfa19478df8a0485b4ddc1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anime: {fileID: 699755603}
---- !u!114 &699755609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 699755598}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4201283940fae0438c643da76af9a4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
-  cameraTransform: {fileID: 1865083429}
-  rotationSpeed: 10
 --- !u!1 &1394450815
 GameObject:
   m_ObjectHideFlags: 0
@@ -968,11 +941,19 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3906d8048692b104180a0963b2a063fe,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 699755599}
+      addedObject: {fileID: 699755606}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3906d8048692b104180a0963b2a063fe,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 699755601}
+      addedObject: {fileID: 699755607}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3906d8048692b104180a0963b2a063fe,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 699755608}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3906d8048692b104180a0963b2a063fe,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 699755599}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3906d8048692b104180a0963b2a063fe,
         type: 3}
       insertIndex: -1
@@ -989,22 +970,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 699755605}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3906d8048692b104180a0963b2a063fe,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 699755606}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3906d8048692b104180a0963b2a063fe,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 699755609}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3906d8048692b104180a0963b2a063fe,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 699755608}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3906d8048692b104180a0963b2a063fe,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 699755607}
   m_SourcePrefab: {fileID: 100100000, guid: 3906d8048692b104180a0963b2a063fe, type: 3}
 --- !u!1 &1865083426
 GameObject:
@@ -1092,7 +1057,7 @@ Transform:
   m_GameObject: {fileID: 1865083426}
   serializedVersion: 2
   m_LocalRotation: {x: 0.21303032, y: -0, z: -0, w: 0.9770456}
-  m_LocalPosition: {x: 0.2, y: 9.9, z: -24.4}
+  m_LocalPosition: {x: -0.39, y: 1.87, z: -2.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

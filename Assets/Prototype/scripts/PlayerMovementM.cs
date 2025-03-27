@@ -1,14 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
-
 public class PlayerMovementAdvance : MonoBehaviour
 {
     
     public float normalSpeed = 5f;
-    public float sprintSpeed = 10f;
+    public float currentSpeed = 0f;
+    private static bool isWalking = false;
     public Transform cameraTransform;
-    [SerializeField] private float rotationSpeed = 10f;
+    [SerializeField] private float rotationSpeed = 15f;
 
     private Vector3 nullVector;
 
@@ -19,21 +18,27 @@ public class PlayerMovementAdvance : MonoBehaviour
 
     void Move()
     {
-        float inputX = Input.GetAxisRaw("Horizontal"); // A/D
-        float inputZ = Input.GetAxisRaw("Vertical");   // W/S
-
+        isWalking =  ((Input.GetAxisRaw("Horizontal") != 0f || Input.GetAxisRaw("Vertical") != 0f)) ? true :false;
+        bool isSprinting= PlayerSprint.GetIsSprinting();
         Vector3 moveDirection = Vector3.zero;
-        if (inputX != 0 || inputZ != 0)
+        if (isWalking)
         {
+            float inputX = Input.GetAxisRaw("Horizontal"); // A/D
+            float inputZ = Input.GetAxisRaw("Vertical");   // W/S
             moveDirection = cameraTransform.forward * inputZ + cameraTransform.right * inputX;
             moveDirection.y = 0;
             moveDirection.Normalize();
-
             RotateTowardsDirection(moveDirection);
+            SetSpeed(normalSpeed);
         }
+        else if(GetInputMagnitude()<=0)
+        {
 
-        Vector3 velocity = moveDirection * normalSpeed;
-        transform.position += moveDirection * normalSpeed * Time.deltaTime;
+            SetSpeed(0f);
+        }
+        
+        SetVelocity(moveDirection);
+        Debug.Log("Current speed"+currentSpeed);
     }
 
     void RotateTowardsDirection(Vector3 direction)
@@ -44,8 +49,14 @@ public class PlayerMovementAdvance : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
     }
+    // Method to get movement intensity (0 to 1)
+    public float GetMovementIntensity()
+    {
+        float normalizedSpeed = Mathf.Clamp01((currentSpeed - normalSpeed) / (PlayerSprint.sprintSpeed - normalSpeed));
+        return (float)System.Math.Round(normalizedSpeed, 5);
+    }
 
-    public float GetInputMagnitude()
+    public static float GetInputMagnitude()
     {
         float inputX = Mathf.Abs(Input.GetAxisRaw("Horizontal"));
         float inputZ = Mathf.Abs(Input.GetAxisRaw("Vertical"));
@@ -54,7 +65,14 @@ public class PlayerMovementAdvance : MonoBehaviour
 
     public void SetSpeed(float newSpeed)
     {
-        normalSpeed = newSpeed;
+        currentSpeed = newSpeed;
     }
+    public void SetVelocity(Vector3 moveDir)
+    {
+        Vector3 velocity = moveDir * currentSpeed;
+        transform.position += moveDir * currentSpeed * Time.deltaTime;
+    }
+    public static bool GetIsWalking() => isWalking;
+
 }
 

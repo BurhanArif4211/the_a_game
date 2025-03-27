@@ -6,10 +6,12 @@ public class PlayerJump : MonoBehaviour
 {
     public float jumpForce = 5f;
     public Rigidbody rb;
+    Animator anime;
     private bool isGrounded;
 
     void Start()
     {
+        anime = GetComponent<Animator>();
         rb.freezeRotation = true;
     }
 
@@ -20,8 +22,15 @@ public class PlayerJump : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
         }
+        if (isGrounded)
+        {
+            anime.SetBool("isJumping", false);
+        }
+        else
+        {
+            anime.SetBool("isJumping", true);
+        }
     }
-
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == 6) // Ground layer
